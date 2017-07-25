@@ -1,0 +1,3 @@
+- include: nginx.yml
+- include: wildfly.yml
+- include: dywa.yml

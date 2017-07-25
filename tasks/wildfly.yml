@@ -1,0 +1,92 @@
+- name: add group wildfly
+  group:
+    name: wildfly
+    state: present
+
+- name: add user wildfly
+  user:
+    name: wildfly
+    group: wildfly
+    shell: /sbin/nologin
+    state: present
+
+- name: install the package "openjdk-8-jdk"
+  apt:
+    name: openjdk-8-jdk
+    update_cache: yes
+    state: present
+
+- name: install the package "maven"
+  apt:
+    name: maven
+    update_cache: yes
+    state: present
+
+- name: download wildfly
+  get_url:
+    url: "https://download.jboss.org/wildfly/{{wildfly_version}}/wildfly-{{wildfly_version}}.tar.gz"
+    dest: "{{wildfly_download_path}}"
+    checksum: md5:d49d042509d51713038394715b8480ab
+
+- name: unarchive wildfly
+  unarchive:
+    src: "{{wildfly_download_path}}"
+    dest: "/opt"
+    creates: "{{wildfly_home}}"
+    mode: 0755
+    remote_src: True
+
+- name: create postgresql driver folder
+  file:
+    path: "{{postgresql_folder}}"
+    state: directory
+    mode: 0755
+
+- name: install postgresql driver
+  get_url:
+    url: https://jdbc.postgresql.org/download/postgresql-9.4.1207.jar
+    dest: "{{postgresql_folder}}"
+    checksum: md5:b06c414b40f5db51a314e32e2cda3027
+
+- name: copy postgresql driver module.xml
+  copy:
+    src: ./files/wildfly/postgresql-module.xml
+    dest: "{{postgresql_module_file}}"
+
+- name: install ecplipselink
+  get_url:
+    url: http://central.maven.org/maven2/org/eclipse/persistence/eclipselink/2.6.2/eclipselink-2.6.2.jar
+    dest: "{{ecplipselink_folder}}"
+    checksum: md5:f010e420d682b8f47cf273ece23e24cf
+
+- name: copy eclipselink module.xml
+  copy:
+    src: ./files/wildfly/eclipselink-module.xml
+    dest: "{{ecplipselink_module_file}}"
+
+- name: copy standalone.xml
+  copy:
+    src: ./files/wildfly/standalone.xml
+    dest: "{{wildfly_standalone_configuration_path}}"
+    force: yes
+
+- name: set ownership of wildfly directory
+  file:
+    path: "{{wildfly_home}}"
+    owner: wildfly
+    group: wildfly
+    recurse: yes
+
+- name: install wildfly.service file
+  template:
+    src: ./files/wildfly/wildfly.service.j2
+    dest: /etc/systemd/system/wildfly.service
+  notify: 'wildfly post install'
+
+- name: install wildfly environment file
+  template:
+    src: ./files/wildfly/wildfly.j2
+    dest: /etc/default/wildfly
+  notify: 'wildfly post install'
+
+- meta: flush_handlers
