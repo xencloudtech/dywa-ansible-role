@@ -8,6 +8,7 @@ galaxy_info:
   - name: Debian
     versions:
     - stretch
-  galaxy_tags: []
+  galaxy_tags:
+   - dywa
 dependencies:
   - { role: ANXS.postgresql }
