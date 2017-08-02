@@ -28,7 +28,13 @@
 - name: install nginx default site
   template:
     src: ./files/nginx/start.j2
+    dest: /etc/nginx/sites-available/start
+
+- name: activate nginx default site
+  file:
+    src: /etc/nginx/sites-available/start
     dest: /etc/nginx/sites-enabled/start
+    state: link
 
 - name: reload nginx to activate letsencrypt site
   become: true
@@ -48,7 +54,13 @@
 - name: install nginx wildfly site
   template:
     src: ./files/nginx/wildfly.j2
+    dest: /etc/nginx/sites-available/wildfly
+
+- name: activate nginx wildfly site
+  file:
+    src: /etc/nginx/sites-available/wildfly
     dest: /etc/nginx/sites-enabled/wildfly
+    state: link
   notify: 'restart nginx'
 
 #- name: Add letsencrypt cronjob for cert renewal
