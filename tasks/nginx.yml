@@ -25,6 +25,11 @@
     src: ./files/nginx/basic_auth.j2
     dest: /etc/nginx/basic_auth
 
+- name: install nginx maintenance site
+  template:
+    src: ./files/nginx/maintenance.j2
+    dest: /etc/nginx/sites-available/maintenance
+
 - name: install nginx default site
   template:
     src: ./files/nginx/start.j2
