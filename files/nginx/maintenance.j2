@@ -20,7 +20,8 @@ server {
     ssl_prefer_server_ciphers on;
 
     location / {
-        return 503 "Maintenance mode";
+        add_header Content-Type text/html;
+        return 200 "Maintenance mode";
     }
 }
 
