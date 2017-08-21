@@ -65,7 +65,7 @@
     dest: "{{ecplipselink_module_file}}"
 
 - name: copy standalone.xml
-  copy:
+  template:
     src: ./files/wildfly/standalone.xml
     dest: "{{wildfly_standalone_configuration_path}}"
     force: yes

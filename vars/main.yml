@@ -20,20 +20,20 @@ postgresql_lc_messages: 'C'
 # Note: for more flexibility with extensions use the postgresql_database_extensions setting.
 postgresql_databases:
   - name: dywa
-    owner: sa          # optional; specify the owner of the database
+    owner: "{{dywa_database_user}}"     # optional; specify the owner of the database
 
 # List of users to be created (optional)
 postgresql_users:
-  - name: sa
-    pass: sa
-    encrypted: no       # denotes if the password is already encrypted.
+  - name: "{{dywa_database_user}}"
+    pass: "{{dywa_database_password}}"
+    encrypted: no                       # denotes if the password is already encrypted.
 
 # List of user privileges to be applied (optional)
 postgresql_user_privileges:
-  - name: sa                   # user name
-    db: dywa                  # database
-    priv: "ALL"                 # privilege string format: example: INSERT,UPDATE/table:SELECT/anothertable:ALL
-    role_attr_flags: "CREATEDB" # role attribute flags
+  - name: "{{dywa_database_user}}"  # user name
+    db: dywa                        # database
+    priv: "ALL"                     # privilege string format: example: INSERT,UPDATE/table:SELECT/anothertable:ALL
+    role_attr_flags: "CREATEDB"     # role attribute flags
 
 wildfly_version: "10.1.0.Final"
 wildfly_home: "/opt/wildfly-{{wildfly_version}}"

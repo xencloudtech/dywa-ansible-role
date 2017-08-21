@@ -150,10 +150,10 @@
                         dywa
                     </xa-datasource-property>
                     <xa-datasource-property name="User">
-                        sa
+                        {{dywa_database_user}}
                     </xa-datasource-property>
                     <xa-datasource-property name="Password">
-                        sa
+                        {{dywa_database_password}}
                     </xa-datasource-property>
                     <driver>postgresql</driver>
                     <transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
