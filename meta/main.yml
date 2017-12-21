@@ -1,13 +1,16 @@
 galaxy_info:
   author: Tim Tegeler
   description: "Install and configure DyWA with PostgreSQL as database backend and Nginx as proxy"
-  issue_tracker_url: http://example.com/issue/tracker
+  issue_tracker_url: https://github.com/scce/dywa-ansible-role/issues
   license: MIT
-  min_ansible_version: 1.2
+  min_ansible_version: 2.4.2.0
   platforms:
   - name: Debian
     versions:
     - stretch
+  - name: Ubuntu
+    versions:
+    - xenial
   galaxy_tags:
    - dywa
 dependencies:
