@@ -4,8 +4,12 @@ Ansible role which installs and configure DyWA with PostgreSQL as database backe
 
 ## Role Variables
 
-- dywa_user
+- domain_name
+- dywa_database_password
+- dywa_database_user
 - dywa_password
+- dywa_user
+- letsencrypt_email
 
 ## Dependencies
 
