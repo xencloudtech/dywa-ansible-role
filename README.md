@@ -1,6 +1,6 @@
 # DyWA
 
-Ansible role which installs and configure DyWA with PostgreSQL as database backend and Nginx as proxy.
+Ansible role which installs and configures DyWA with PostgreSQL as database backend and Nginx as proxy.
 
 ## Role Variables
 
