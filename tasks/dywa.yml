@@ -7,7 +7,7 @@
 - name: deploy dywa
   jboss:
     src: "{{dywa_download_path}}"
-    deployment: app-0.7.ear
+    deployment: dywa.ear
     state: present
     deploy_path: "{{wildfly_deployments_path}}"
 
