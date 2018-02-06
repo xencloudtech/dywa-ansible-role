@@ -323,7 +323,7 @@
             <resource-adapters>
                 <resource-adapter id="dywa-xadisk">
                     <archive>
-                        app-0.7.ear#xadisk.rar
+                        dywa.ear#xadisk.rar
                     </archive>
                     <config-property name="xaDiskHome">${jboss.home.dir}/standalone/data/xadisk/</config-property>
                     <transaction-support>XATransaction</transaction-support>
