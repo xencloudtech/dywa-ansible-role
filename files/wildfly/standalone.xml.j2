@@ -32,6 +32,9 @@
 
     <system-properties>
         <property name="de.ls5.dywa.JBOSS_HOME" value="${jboss.home.dir}"/>
+    {% for property in wildfly_system_properties %}
+        <property name="{{ property.name }}" value="{{ property.value }}"/>
+    {% endfor %}
     </system-properties>
 
     <management>
