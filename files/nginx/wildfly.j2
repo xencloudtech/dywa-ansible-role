@@ -9,7 +9,7 @@ upstream mailcatcher {
 {% endif %}
 
 server {
-    listen 443 ssl default deferred;
+    listen {{ domain_name }}:443 ssl default deferred;
     server_name {{ domain_name }};
 
     ssl on;

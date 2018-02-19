@@ -68,6 +68,18 @@
     state: link
   notify: 'restart nginx'
 
+- name: install nginx wildfly-websockets site
+  template:
+    src: ./files/nginx/wildfly-websockets.j2
+    dest: /etc/nginx/sites-available/wildfly-websockets
+
+- name: activate nginx wildfly-websockets site
+  file:
+    src: /etc/nginx/sites-available/wildfly-websockets
+    dest: /etc/nginx/sites-enabled/wildfly-websockets
+    state: link
+  notify: 'restart nginx'
+
 #- name: Add letsencrypt cronjob for cert renewal
 #  cron:
 #    name: letsencrypt_renewal
