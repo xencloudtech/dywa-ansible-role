@@ -45,11 +45,19 @@
   become: true
   service: name=nginx state=restarted
 
-- name: create letsencrypt certificate
+- name: create letsencrypt certificate without alternative domains
   shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
   args:
     creates: /etc/letsencrypt/live/{{ domain_name }}
   notify: 'restart nginx'
+  when: alternative_domain_name is undefined
+
+- name: create letsencrypt certificate with alternative domains
+  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} -d {{ alternative_domain_name }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain_name }}
+  notify: 'restart nginx'
+  when: alternative_domain_name is defined
 
 - name: generate dhparams
   shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048

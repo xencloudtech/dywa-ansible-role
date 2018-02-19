@@ -2,7 +2,7 @@ server_tokens off;
 
 server {
     listen {{ domain_name }}:80 default_server;
-    server_name {{ domain_name }};
+    server_name {{ domain_name }}{% if alternative_domain_name is defined %} {{ alternative_domain_name }}{% endif %};
 
     location /.well-known/acme-challenge {
         root /var/www/letsencrypt;
@@ -10,6 +10,10 @@ server {
     }
 
     location / {
+{% if alternative_domain_name is defined %}
+        rewrite ^ https://{{ alternative_domain_name }}$request_uri? permanent;
+{% else %}
         rewrite ^ https://{{ domain_name }}$request_uri? permanent;
+{% endif %}
     }
 }

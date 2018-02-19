@@ -10,7 +10,7 @@ upstream mailcatcher {
 
 server {
     listen {{ domain_name }}:443 ssl default deferred;
-    server_name {{ domain_name }};
+    server_name {{ domain_name }}{% if alternative_domain_name is defined %} {{ alternative_domain_name }}{% endif %};
 
     ssl on;
     ssl_certificate         /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem;
@@ -81,7 +81,11 @@ server {
 
 
     location / {
-	    rewrite ^/$ https://{{ domain_name }}/app redirect;
+{% if alternative_domain_name is defined %}
+        rewrite ^/$ https://{{ alternative_domain_name }}/app redirect;
+{% else %}
+        rewrite ^/$ https://{{ domain_name }}/app redirect;
+{% endif %}
     }
 
 }
