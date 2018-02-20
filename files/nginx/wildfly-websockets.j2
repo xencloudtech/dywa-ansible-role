@@ -1,10 +1,10 @@
-{% for live_variable in live_variables %}
-upstream wildfly-websocket-{{ live_variable.name }} {
-    server 127.0.0.1:{{ live_variable.port }};
+{% for live_gui in live_guis %}
+upstream wildfly-websocket-{{ live_gui.name }} {
+    server 127.0.0.1:{{ live_gui.port }};
 }
 
 server {
-    listen {{ domain_name }}:{{ live_variable.port }} ssl deferred;
+    listen {{ domain_name }}:{{ live_gui.port }} ssl deferred;
     server_name {{ domain_name }}{% if alternative_domain_name is defined %} {{ alternative_domain_name }}{% endif %};
 
     ssl on;
@@ -33,7 +33,7 @@ server {
         gzip_min_length     1000;
         gzip_proxied        any;
         gzip_types          application/javascript text/css;
-        proxy_pass          http://wildfly-websocket-{{ live_variable.name }}/;
+        proxy_pass          http://wildfly-websocket-{{ live_gui.name }}/;
         proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
         proxy_redirect      off;
         proxy_set_header    Host            $host;
