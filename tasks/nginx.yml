@@ -63,11 +63,13 @@
   shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
   args:
     creates: /etc/nginx/dhparams.pem
+  notify: 'restart nginx'
 
 - name: install nginx wildfly site
   template:
     src: ./files/nginx/wildfly.j2
     dest: /etc/nginx/sites-available/wildfly
+  notify: 'restart nginx'
 
 - name: activate nginx wildfly site
   file:
@@ -80,6 +82,7 @@
   template:
     src: ./files/nginx/wildfly-websockets.j2
     dest: /etc/nginx/sites-available/wildfly-websockets
+  notify: 'restart nginx'
 
 - name: activate nginx wildfly-websockets site
   file:

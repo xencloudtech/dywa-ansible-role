@@ -77,6 +77,12 @@
     group: wildfly
     recurse: yes
 
+- name: set mode of wildfly deployment directory
+  file:
+    path: "{{wildfly_deployments_path}}"
+    mode: 770
+    recurse: yes
+
 - name: install wildfly.service file
   template:
     src: ./files/wildfly/wildfly.service.j2
