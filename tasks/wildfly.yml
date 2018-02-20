@@ -80,7 +80,7 @@
 - name: set mode of wildfly deployment directory
   file:
     path: "{{wildfly_deployments_path}}"
-    mode: 770
+    mode: 0775
     recurse: yes
 
 - name: install wildfly.service file
