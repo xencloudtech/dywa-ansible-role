@@ -1,3 +1,4 @@
+# install
 - name: install nginx
   apt:
     name: nginx
@@ -9,9 +10,25 @@
     name: letsencrypt
     state: present
 
+# directories
 - name: create letsencrypt directory
-  file: name=/var/www/letsencrypt state=directory
+  file:
+    path: /var/www/letsencrypt
+    state: directory
 
+- name: create maintenance folder
+  file:
+    path: /var/www/html/maintenance
+    state: directory
+    mode: 0755
+
+- name: create teaser folder
+  file:
+    path: /var/www/html/teaser
+    state: directory
+    mode: 0755
+
+# install basic configs
 - name: remove default nginx config
   file: name=/etc/nginx/sites-enabled/default state=absent
 
@@ -25,11 +42,6 @@
     src: ./files/nginx/basic_auth.j2
     dest: /etc/nginx/basic_auth
 
-- name: install nginx maintenance site
-  template:
-    src: ./files/nginx/maintenance.j2
-    dest: /etc/nginx/sites-available/maintenance
-
 - name: install nginx default site
   template:
     src: ./files/nginx/start.j2
@@ -41,6 +53,7 @@
     dest: /etc/nginx/sites-enabled/start
     state: link
 
+# create letsencrypt certificate
 - name: reload nginx to activate letsencrypt site
   become: true
   service: name=nginx state=restarted
@@ -65,30 +78,17 @@
     creates: /etc/nginx/dhparams.pem
   notify: 'restart nginx'
 
+# install nginx sites
 - name: install nginx wildfly site
   template:
     src: ./files/nginx/wildfly.j2
     dest: /etc/nginx/sites-available/wildfly
   notify: 'restart nginx'
 
-- name: activate nginx wildfly site
-  file:
-    src: /etc/nginx/sites-available/wildfly
-    dest: /etc/nginx/sites-enabled/wildfly
-    state: link
-  notify: 'restart nginx'
-
 - name: install nginx wildfly-websockets site
   template:
     src: ./files/nginx/wildfly-websockets.j2
     dest: /etc/nginx/sites-available/wildfly-websockets
-  notify: 'restart nginx'
-
-- name: activate nginx wildfly-websockets site
-  file:
-    src: /etc/nginx/sites-available/wildfly-websockets
-    dest: /etc/nginx/sites-enabled/wildfly-websockets
-    state: link
   notify: 'restart nginx'
 
 - name: install nginx teaser site
@@ -103,17 +103,8 @@
     dest: /etc/nginx/sites-available/maintenance
   notify: 'restart nginx'
 
-- name: create maintenance folder
-  file:
-    path: /var/www/html/maintenance
-    state: directory
-    mode: 0755
-
-- name: create teaser folder
-  file:
-    path: /var/www/html/teaser
-    state: directory
-    mode: 0755
+# activate nginx sites
+- include_tasks: 'nginx/{{ mode }}.yml'
 
 #- name: Add letsencrypt cronjob for cert renewal
 #  cron:
