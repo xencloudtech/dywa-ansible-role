@@ -81,11 +81,7 @@ server {
 
 
     location / {
-{% if alternative_domain_name is defined %}
-        rewrite ^/$ https://{{ alternative_domain_name }}/app redirect;
-{% else %}
         rewrite ^/$ https://{{ domain_name }}/app redirect;
-{% endif %}
     }
 
 }

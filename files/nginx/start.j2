@@ -10,10 +10,6 @@ server {
     }
 
     location / {
-{% if alternative_domain_name is defined %}
-        rewrite ^ https://{{ alternative_domain_name }}$request_uri? permanent;
-{% else %}
         rewrite ^ https://{{ domain_name }}$request_uri? permanent;
-{% endif %}
     }
 }
