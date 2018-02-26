@@ -14,7 +14,7 @@
 
 - name: deactivate nginx maintenance site
   file:
-    path: /etc/nginx/sites-enabled/meintenance
+    path: /etc/nginx/sites-enabled/maintenance
     state: absent
   notify: 'restart nginx'
 
