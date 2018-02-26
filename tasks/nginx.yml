@@ -91,6 +91,18 @@
     state: link
   notify: 'restart nginx'
 
+- name: install nginx teaser site
+  template:
+    src: ./files/nginx/teaser.j2
+    dest: /etc/nginx/sites-available/teaser
+  notify: 'restart nginx'
+
+- name: install nginx maintenance site
+  template:
+    src: ./files/nginx/maintenance.j2
+    dest: /etc/nginx/sites-available/maintenance
+  notify: 'restart nginx'
+
 #- name: Add letsencrypt cronjob for cert renewal
 #  cron:
 #    name: letsencrypt_renewal
