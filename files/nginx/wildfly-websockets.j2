@@ -15,18 +15,13 @@ server {
     client_max_body_size 100m;
 
     location / {
+        {% include './partials/proxy-basics.j2' %}
+        proxy_pass          http://wildfly-websocket-{{ live_gui.name }}/;
+        proxy_read_timeout  8h;
         gzip                on;
         gzip_min_length     1000;
         gzip_proxied        any;
         gzip_types          application/javascript text/css;
-        proxy_pass          http://wildfly-websocket-{{ live_gui.name }}/;
-        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
-        proxy_redirect      off;
-        proxy_set_header    Host            $host;
-        proxy_set_header    X-Real-IP       $remote_addr;
-        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header    X-Forwarded-Proto https;
-        proxy_read_timeout  8h;
     }
 
 }
