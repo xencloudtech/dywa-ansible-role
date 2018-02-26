@@ -103,6 +103,18 @@
     dest: /etc/nginx/sites-available/maintenance
   notify: 'restart nginx'
 
+- name: create maintenance folder
+  file:
+    path: /var/www/html/maintenance
+    state: directory
+    mode: 0755
+
+- name: create teaser folder
+  file:
+    path: /var/www/html/teaser
+    state: directory
+    mode: 0755
+
 #- name: Add letsencrypt cronjob for cert renewal
 #  cron:
 #    name: letsencrypt_renewal

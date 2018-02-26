@@ -1,13 +1,3 @@
-server {
-
-    listen 443 ssl default deferred;
-    server_name {{ domain_name }};
-
-    {% include './partials/ssl.j2' %}
-
-    location / {
-        add_header Content-Type text/html;
-        return 200 "Maintenance mode";
-    }
-}
-
+{% with folder = 'maintenance' %}
+    {% include './partials/static-site.j2' %}
+{% endwith %}

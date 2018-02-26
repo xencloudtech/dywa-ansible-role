@@ -1,0 +1,11 @@
+server {
+
+    listen 443 ssl default deferred;
+    server_name {{ domain_name }};
+
+    {% include './partials/ssl.j2' %}
+
+    location / {
+        root /var/www/html/{{ folder }};
+    }
+}
