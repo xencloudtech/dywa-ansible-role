@@ -58,15 +58,9 @@
   become: true
   service: name=nginx state=restarted
 
-- name: Define letsencrypt command with alternative_domain_name
-  set_fact:
-    letsencrpyt_command: 'letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} -d {{ alternative_domain_name }}'
-  when: alternative_domain_name is defined
-
-- name: Define letsencrypt command without alternative_domain
+- name: Define letsencrypt command
   set_fact:
     letsencrpyt_command: 'letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}'
-  when: alternative_domain_name is undefined
 
 - name: Create letsencrypt certificate
   shell: '{{letsencrpyt_command}}'
