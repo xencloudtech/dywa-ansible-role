@@ -18,15 +18,19 @@
 
 - name: create maintenance folder
   file:
+    group: '{{deployment_user}}'
+    mode: 0755
+    owner: '{{deployment_user}}'
     path: /var/www/html/maintenance
     state: directory
-    mode: 0755
 
 - name: create teaser folder
   file:
+    group: '{{deployment_user}}'
+    mode: 0755
+    owner: '{{deployment_user}}'
     path: /var/www/html/teaser
     state: directory
-    mode: 0755
 
 # install basic configs
 - name: remove default nginx config
