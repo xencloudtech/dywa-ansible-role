@@ -1,19 +1,19 @@
 - name: check if dywa exists
   stat:
-    path: "{{wildfly_deployments_path}}/dywa.ear"
+    path: '{{wildfly_deployments_path}}/dywa.ear'
   register: dywa
 
 - name: download dywa
   get_url:
-    url: "{{dywa_url}}"
-    dest: "{{dywa_download_path}}"
+    url: '{{dywa_url}}'
+    dest: '{{dywa_download_path}}'
     checksum: md5:aac60f81229972feea9e63cca0cb2ed6
   when: dywa.stat.exists == False
 
 - name: deploy dywa
   jboss:
-    src: "{{dywa_download_path}}"
+    src: '{{dywa_download_path}}'
     deployment: dywa.ear
     state: present
-    deploy_path: "{{wildfly_deployments_path}}"
+    deploy_path: '{{wildfly_deployments_path}}'
   when: dywa.stat.exists == False
