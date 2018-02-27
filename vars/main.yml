@@ -39,6 +39,8 @@ wildfly_version: "10.1.0.Final"
 wildfly_home: "/opt/wildfly-{{wildfly_version}}"
 wildfly_download_path: "/tmp/wildfly-{{wildfly_version}}.tar.gz"
 wildfly_deployments_path: "{{wildfly_home}}/standalone/deployments/"
+wildfly_data_files_path: "{{wildfly_home}}/standalone/data/files/"
+
 wildfly_standalone_configuration_path: "{{wildfly_home}}/standalone/configuration/standalone.xml"
 
 dywa_version: "0.7"

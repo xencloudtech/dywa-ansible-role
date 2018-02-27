@@ -70,16 +70,21 @@
     dest: "{{wildfly_standalone_configuration_path}}"
     force: yes
 
-- name: set ownership of wildfly directory
+- name: 'set mode of {{wildfly_home}}'
   file:
-    path: "{{wildfly_home}}"
+    path: '{{wildfly_home}}'
     owner: wildfly
     group: wildfly
     recurse: yes
 
-- name: set mode of wildfly deployment directory
+- name: 'set mode of {{wildfly_data_files_path}}'
   file:
-    path: "{{wildfly_deployments_path}}"
+    path: '{{wildfly_data_files_path}}'
+    mode: 0775
+
+- name: 'set mode of {{wildfly_deployments_path}}'
+  file:
+    path: '{{wildfly_deployments_path}}'
     mode: 0775
     recurse: yes
 
