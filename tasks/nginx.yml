@@ -58,19 +58,27 @@
   become: true
   service: name=nginx state=restarted
 
-- name: create letsencrypt certificate without alternative domains
-  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
-  args:
-    creates: /etc/letsencrypt/live/{{ domain_name }}
-  notify: 'restart nginx'
+- name: Define letsencrypt command with alternative_domain_name
+  set_fact:
+    letsencrpyt_command: 'letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} -d {{ alternative_domain_name }}'
+  when: alternative_domain_name is defined
+
+- name: Define letsencrypt command without alternative_domain
+  set_fact:
+    letsencrpyt_command: 'letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}'
   when: alternative_domain_name is undefined
 
-- name: create letsencrypt certificate with alternative domains
-  shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} -d {{ alternative_domain_name }}
+- name: Create letsencrypt certificate
+  shell: '{{letsencrpyt_command}}'
   args:
     creates: /etc/letsencrypt/live/{{ domain_name }}
   notify: 'restart nginx'
-  when: alternative_domain_name is defined
+
+- name: Add letsencrypt cronjob for cert renewal
+  cron:
+    name: letsencrypt_renewal
+    special_time: weekly
+    job: '{{letsencrpyt_command}}'
 
 - name: generate dhparams
   shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
@@ -105,9 +113,3 @@
 
 # activate nginx sites
 - include_tasks: 'nginx/{{ mode }}.yml'
-
-#- name: Add letsencrypt cronjob for cert renewal
-#  cron:
-#    name: letsencrypt_renewal
-#    special_time: weekly
-#    job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} && service nginx reload
