@@ -33,34 +33,44 @@
     state: directory
 
 # install basic configs
-- name: remove default nginx config
-  file: name=/etc/nginx/sites-enabled/default state=absent
+- name: deinstall nginx default site
+  file:
+    name: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: 'restart nginx'
+
+- name: remove nginx default site
+  file:
+    name: /etc/nginx/sites-available/default
+    state: absent
+  notify: 'restart nginx'
 
 - name: install nginx config
   template:
     src: ./files/nginx/nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+  notify: 'restart nginx'
 
 - name: install nginx basic_auth
   template:
     src: ./files/nginx/basic_auth.j2
     dest: /etc/nginx/basic_auth
 
-- name: install nginx default site
+- name: install nginx start site
   template:
     src: ./files/nginx/start.j2
     dest: /etc/nginx/sites-available/start
+  notify: 'restart nginx'
 
-- name: activate nginx default site
+- name: activate nginx start site
   file:
     src: /etc/nginx/sites-available/start
     dest: /etc/nginx/sites-enabled/start
     state: link
+  notify: 'restart nginx'
 
 # create letsencrypt certificate
-- name: reload nginx to activate letsencrypt site
-  become: true
-  service: name=nginx state=restarted
+- meta: flush_handlers
 
 - name: Define letsencrypt command
   set_fact:
