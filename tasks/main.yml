@@ -2,3 +2,4 @@
 - import_tasks: wildfly.yml
 - import_tasks: dywa.yml
 - import_tasks: deployment.yml
+- import_tasks: logs.yml

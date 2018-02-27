@@ -1,0 +1,7 @@
+- name: create log folder
+  file:
+    path: '/var/log/dywa-{{ app_name }}/'
+    owner: wildfly
+    group: wildfly
+    state: directory
+    mode: 0775
