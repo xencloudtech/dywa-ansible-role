@@ -392,7 +392,14 @@
         <subsystem xmlns="urn:jboss:domain:undertow:3.0">
             <buffer-cache name="default"/>
             <server name="default-server">
-                <http-listener name="default" socket-binding="http" redirect-socket="https" proxy-address-forwarding="true"/>
+                <http-listener
+                        max-parameters="4096"
+                        max-post-size="{{ client_max_body_size }}"
+                        name="default"
+                        proxy-address-forwarding="true"
+                        redirect-socket="https"
+                        socket-binding="http"
+                />
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <!--<filter-ref name="server-header"/>-->
