@@ -83,9 +83,10 @@
     group: wildfly
     recurse: yes
 
-- name: 'set mode of {{wildfly_data_files_path}}'
+- name: 'create and set mode of {{wildfly_data_files_path}}'
   file:
     path: '{{wildfly_data_files_path}}'
+    state: directory
     mode: 0775
 
 - name: 'set mode of {{wildfly_deployments_path}}'
