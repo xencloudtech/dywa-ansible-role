@@ -75,6 +75,7 @@
     src: ./files/wildfly/standalone.xml.j2
     dest: '{{wildfly_standalone_configuration_path}}'
     force: yes
+  notify: 'wildfly config changed'
 
 - name: 'set mode of {{wildfly_home}}'
   file:
