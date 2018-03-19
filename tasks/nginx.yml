@@ -10,7 +10,7 @@
     name: letsencrypt
     state: present
 
-# directories
+# directories and files
 - name: create letsencrypt directory
   file:
     path: /var/www/letsencrypt
@@ -24,6 +24,18 @@
     path: /var/www/html/maintenance
     state: directory
 
+- name: check if maintenance index exists
+  stat:
+    path: /var/www/html/maintenance/index.html
+  register: maintenance_index
+
+- name: copy maintenance file
+  copy:
+    src: ./files/nginx/html/maintenance.html
+    dest: /var/www/html/maintenance/index.html
+    mode: 0644
+  when: maintenance_index.stat.exists == False
+
 - name: create teaser folder
   file:
     group: '{{deployment_user}}'
@@ -31,6 +43,18 @@
     owner: '{{deployment_user}}'
     path: /var/www/html/teaser
     state: directory
+
+- name: check if teaser index exists
+  stat:
+    path: /var/www/html/teaser/index.html
+  register: teaser_index
+
+- name: copy teaser file
+  copy:
+    src: ./files/nginx/html/teaser.html
+    dest: /var/www/html/teaser/index.html
+    mode: 0644
+  when: teaser_index.stat.exists == False
 
 # install basic configs
 - name: deinstall nginx default site
