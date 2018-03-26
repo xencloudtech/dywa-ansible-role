@@ -56,6 +56,20 @@
     mode: 0644
   when: teaser_index.stat.exists == False
 
+- name: create error folder
+  file:
+    group: '{{deployment_user}}'
+    mode: 0755
+    owner: '{{deployment_user}}'
+    path: /var/www/html/error
+    state: directory
+
+- name: copy 502.txt file
+  copy:
+    src: ./files/nginx/error/502.txt
+    dest: /var/www/html/error/502.txt
+    mode: 0644
+
 # install basic configs
 - name: deinstall nginx default site
   file:

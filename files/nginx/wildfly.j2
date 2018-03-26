@@ -52,8 +52,15 @@ server {
         gzip_min_length 	    1024;
         gzip_proxied 		    any;
         gzip_types 		        application/javascript text/css;
+
+        error_page              502 /502;
     }
 
+    location = /502 {
+        default_type text/plain;
+        internal;
+        alias /var/www/html/error/502.txt;
+    }
 
     location / {
         rewrite ^/$ https://{{ domain_name }}/app redirect;
