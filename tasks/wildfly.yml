@@ -87,6 +87,8 @@
 - name: 'create and set mode of {{wildfly_data_files_path}}'
   file:
     path: '{{wildfly_data_files_path}}'
+    owner: wildfly
+    group: wildfly
     state: directory
     mode: 0775
 
