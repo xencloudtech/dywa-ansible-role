@@ -77,6 +77,13 @@
     force: yes
   notify: 'wildfly config changed'
 
+- name: copy standalone.conf
+  template:
+    src: ./files/wildfly/standalone.conf.j2
+    dest: '{{wildfly_bin_path}}'
+    force: yes
+  notify: 'wildfly config changed'
+
 - name: 'set mode of {{wildfly_home}}'
   file:
     path: '{{wildfly_home}}'
