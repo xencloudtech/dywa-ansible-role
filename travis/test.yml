@@ -12,6 +12,16 @@
 #        - tar
 #        - sudo
 #      when: ansible_os_family == 'Debian'
+  vars:
+    - deployment_tier: testing
+    - deployment_user: user1
+    - dywa_database_password: password2
+    - dywa_database_user: user2
+    - dywa_password: password3
+    - dywa_user: user3
+    - mail_server: localhost
+    - mail_port: 1025
+    - mode: online
 
   roles:
     - dywa-ansible-role
