@@ -16,12 +16,9 @@ server {
 
     location / {
         {% include './partials/proxy-basics.j2' %}
+        {% include './partials/gzip.j2' %}
         proxy_pass          http://wildfly-websocket-{{ live_gui.name }}/;
         proxy_read_timeout  8h;
-        gzip                on;
-        gzip_min_length     1000;
-        gzip_proxied        any;
-        gzip_types          application/javascript text/css;
     }
 
 }

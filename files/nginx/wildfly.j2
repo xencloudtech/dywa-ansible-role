@@ -46,13 +46,8 @@ server {
 
     location /app/ {
         {% include './partials/proxy-basics.j2' %}
+        {% include './partials/gzip.j2' %}
         proxy_pass  		    http://wildfly/app/;
-
-        gzip 			        on;
-        gzip_min_length 	    1024;
-        gzip_proxied 		    any;
-        gzip_types 		        application/javascript text/css;
-
         error_page              502 /502;
     }
 

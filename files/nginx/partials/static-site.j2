@@ -10,6 +10,7 @@ server {
     }
 
     location / {
+        {% include './partials/gzip.j2' %}
         root /var/www/html/{{ folder }};
     }
 
